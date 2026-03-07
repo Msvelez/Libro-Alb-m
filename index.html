@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Storyboard Visual - Suspenso Revelado</title>
+    <style>
+        /* --- ESTILO MINIMALISTA --- */
+        body { 
+            margin: 0; height: 100vh; display: flex; 
+            justify-content: flex-end; 
+            align-items: center; background-color: #000; 
+            font-family: 'Georgia', serif; overflow: hidden;
+            padding-right: 15%; 
+        }
+
+        .book { 
+            position: relative; width: 600px; height: 750px; 
+            perspective: 2500px; 
+        }
+
+        .page { 
+            position: absolute; width: 100%; height: 100%; transform-origin: left; 
+            transform-style: preserve-3d; transition: transform 1.6s cubic-bezier(0.645, 0.045, 0.355, 1); 
+            z-index: var(--z);
+        }
+
+        .front, .back { 
+            position: absolute; width: 100%; height: 100%; 
+            backface-visibility: hidden; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            background-color: #030303; 
+            border: 1px solid #111;
+        }
+
+        .back { transform: rotateY(180deg); }
+
+        input { display: none; }
+
+        /* Lógica de capas */
+        #p1:checked ~ #page1 { transform: rotateY(-180deg); z-index: 1; }
+        #p2:checked ~ #page2 { transform: rotateY(-180deg); z-index: 2; }
+        #p3:checked ~ #page3 { transform: rotateY(-180deg); z-index: 3; }
+
+        /* --- IMAGENES MÁS CLARAS --- */
+        .story-img { 
+            width: 80%; 
+            height: 60%; 
+            object-fit: cover; 
+            /* He subido el brightness a 0.9 para que se vea casi todo el detalle original */
+            filter: grayscale(1) contrast(1.1) brightness(0.9);
+            border: 1px solid #333; 
+            transition: filter 0.6s ease;
+        }
+
+        .story-img:hover { filter: grayscale(0) contrast(1) brightness(1); }
+
+        p { font-size: 1.1rem; line-height: 1.8; color: #555; text-align: center; max-width: 80%; font-style: italic; }
+        
+        .next-btn { 
+            margin-top: 50px; color: #444; cursor: pointer; 
+            letter-spacing: 4px; transition: 0.5s; text-transform: uppercase;
+            font-size: 0.8rem; border: 1px solid #222; padding: 10px 20px;
+        }
+        .next-btn:hover { color: #800; border-color: #800; }
+
+        #page1 { --z: 3; }
+        #page2 { --z: 2; }
+        #page3 { --z: 1; }
+
+        .hit-flash { animation: flash 0.3s ease-in-out; }
+        @keyframes flash { 0% { background: #000; } 50% { background: #1a0000; } 100% { background: #000; } }
+    </style>
+</head>
+<body>
+
+    <audio id="beat" src="musica.mp3"></audio>
+
+    <div class="book">
+        
+        <input type="checkbox" id="p1">
+        <div class="page" id="page1">
+            <div class="front">
+                <p>"El plástico cruje bajo mis pies. El beat marca el inicio."</p>
+                <label for="p1" class="next-btn" onclick="playEffect('pasos')">DAR EL PASO ➜</label>
+            </div>
+            <div class="back">
+                <img src="bolsa.jpg" class="story-img">
+            </div>
+        </div>
+
+        <input type="checkbox" id="p2">
+        <div class="page" id="page2">
+            <div class="front">
+                <p>"No hay vuelta atrás. El metal busca su propio silencio."</p>
+                <label for="p2" class="next-btn" onclick="playEffect('ataque')">ATACAR ➜</label>
+            </div>
+            <div class="back">
+                <img src="verde.jpg" class="story-img" style="filter: sepia(0.2) brightness(0.8) contrast(1.2) hue-rotate(90deg);">
+            </div>
+        </div>
+
+        <input type="checkbox" id="p3">
+        <div class="page" id="page3">
+            <div class="front">
+                <p>"¿Por qué no se detiene? El motor del remordimiento vibra."</p>
+                <label for="p3" class="next-btn" onclick="playEffect('latido')">OÍR LATIDO ➜</label>
+            </div>
+            <div class="back" style="background: #000;">
+                <p style="color: #600; font-size: 2.5rem; letter-spacing: 12px; font-weight: bold;">¿LO OYES?</p>
+                <button onclick="location.reload()" class="next-btn" style="background:none;">PURGAR MEMORIA</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('beat');
+        function playEffect(scene) {
+            audio.pause(); audio.currentTime = 0;
+            document.body.classList.remove('hit-flash');
+            if (scene === 'pasos') { audio.playbackRate = 0.5; audio.play(); } 
+            else if (scene === 'ataque') { 
+                audio.playbackRate = 2.2; audio.play(); 
+                document.body.classList.add('hit-flash'); 
+            } 
+            else if (scene === 'latido') { audio.playbackRate = 1.0; audio.loop = true; audio.play(); }
+        }
+    </script>
+</body>
+</html>
