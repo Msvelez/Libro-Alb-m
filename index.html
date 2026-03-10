@@ -29,7 +29,6 @@
         .back { transform: rotateY(180deg); }
         input { display: none; }
 
-        /* Lógica de capas para 5 páginas */
         #p1:checked ~ #page1 { transform: rotateY(-180deg); z-index: 1; }
         #p2:checked ~ #page2 { transform: rotateY(-180deg); z-index: 2; }
         #p3:checked ~ #page3 { transform: rotateY(-180deg); z-index: 3; }
@@ -37,8 +36,10 @@
         #p5:checked ~ #page5 { transform: rotateY(-180deg); z-index: 5; }
 
         .story-img { 
-            width: 80%; height: 60%; object-fit: cover; 
-            filter: grayscale(1) contrast(1.1) brightness(0.9);
+            width: 90%; 
+            aspect-ratio: 16 / 9; /* Mantenemos la proporción 16:9 */
+            object-fit: cover; 
+            filter: none; /* HEMOS ELIMINADO EL FILTRO GRIS AQUÍ */
             border: 1px solid #222;
         }
 
@@ -100,7 +101,7 @@
                 <label for="p3" class="next-btn" onclick="playEffect('ataque')">SILENCIARLO ➜</label>
             </div>
             <div class="back">
-                <img src="verde.jpg" class="story-img" style="filter: hue-rotate(90deg) brightness(0.8) contrast(1.4);">
+                <img src="verde.jpg" class="story-img">
             </div>
         </div>
 
